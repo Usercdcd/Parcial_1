@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aplicación Web - Trabajo Corte 1</title>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <style>
+    /* Reset básico y tipografía */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f5f5f5;
+      color: #333;
+      line-height: 1.6;
+      padding: 20px;
+    }
+    header, footer {
+      text-align: center;
+      padding: 15px 0;
+      background: #0077cc;
+      color: #fff;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+    .datos-autor {
+      text-align: center;
+      margin-bottom: 30px;
+      font-weight: bold;
+      font-size: 1.1em;
+    }
+    h1, h2, h3 {
+      margin-bottom: 15px;
+    }
+    .section {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      opacity: 0;
+      animation: fadeIn 1s forwards;
+    }
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+    .box {
+      background: #fafafa;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 15px;
+      width: 300px;
+      transition: transform 0.2s;
+    }
+    .box:hover {
+      transform: scale(1.02);
+    }
+    .box label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    .box input[type="number"],
+    .box input[type="text"] {
+      width: 90%;
+      padding: 8px;
+      text-align: center;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      transition: border-color 0.2s;
+    }
+    .box input[type="number"]:hover,
+    .box input[type="text"]:hover {
+      border-color: #0077cc;
+    }
+    .centrado {
+      text-align: center;
+    }
+    button {
+      background: #28a745;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1em;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.1s;
+    }
+    button:hover {
+      background: #218838;
+    }
+    button:active {
+      transform: scale(0.98);
+    }
+    /* Estilos para la imagen de la ecuación */
+    .equation {
+      text-align: center;
+      margin: 20px 0;
+    }
+    .equation img {
+      max-width: 90%;
+      height: auto;
+      border: 2px solid #0077cc;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    /* Estilos para la tabla */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+    th, td {
+      padding: 8px;
+      text-align: center;
+    }
+    th {
+      background: #0077cc;
+      color: #fff;
+    }
+    /* Gráfico */
+    #chart_div {
+      width: 100%;
+      height: 500px;
+    }
+    @media (max-width: 768px) {
+      .box { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1> Programacion Web - Trabajo Corte 1</h1>
+  </header>
+
+
+  <!-- Datos del autor (cambia con tus datos) -->
+  <div class="datos-autor">
+    Cristian Morales - Código: 2216686<br>
+    Miguel Aponte - Código: 2216672
+  </div>
+
+
+  <!-- Sección de la ecuación -->
+  <section class="section centrado">
+    <h2>Ecuación a Utilizar</h2>
+    <div class="equation">
+      <!-- Asegúrate de tener la imagen "ecuacion.png" en el mismo directorio -->
+      <img src="ecuacion.png" alt="Imagen de la ecuación">
+    </div>
+    <!-- También se muestra la ecuación en formato texto para referencia -->
+   
+    <p style="color:#999; font-size:0.9em;">
+     
+    </p>
+  </section>
+
+
+  <!-- Sección de parámetros y resultados -->
+  <section class="section">
+    <div class="container">
+      <!-- Caja de parámetros -->
+      <div class="box">
+        <h3>Parámetros</h3>
+        <label>Coeficiente A:
+          <input type="number" id="a" value="1">
+        </label>
+        <label>Coeficiente B:
+          <input type="number" id="b" value="2">
+        </label>
+        <label>Coeficiente C:
+          <input type="number" id="c" value="3">
+        </label>
+        <label>Coeficiente D:
+          <input type="number" id="d" value="4">
+        </label>
+        <label>Coeficiente E:
+          <input type="number" id="e" value="5">
+        </label>
+        <label>X Mínimo:
+          <input type="number" id="xmin" value="-3">
+        </label>
+        <label>X Máximo:
+          <input type="number" id="xmax" value="10">
+        </label>
+        <div class="centrado" style="margin-top:15px;">
+          <button onclick="procesar()">Procesar &gt;&gt;</button>
+        </div>
+      </div>
+
+
+      <!-- Caja de resultados -->
+      <div class="box">
+        <h3>Resultados</h3>
+        <label>Valor Y Mínimo:
+          <input type="text" id="ymin" readonly>
+        </label>
+        <label>Valor Y Máximo:
+          <input type="text" id="ymax" readonly>
+        </label>
+        <label>Cortes detectados:
+          <input type="text" id="cortes" readonly>
+        </label>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Sección de tabla de valores -->
+  <section class="section">
+    <h2>Tabla de Valores Generados</h2>
+    <div id="tablaValores"></div>
+  </section>
+
+
+  <!-- Sección de gráfico lineal -->
+  <section class="section">
+    <h2>Gráfico Lineal</h2>
+    <div id="chart_div"></div>
+  </section>
+
+
+  <footer>
+    Universidad Libre – Cali | Facultad de Ingeniería | programacion web
+  </footer>
+
+
+  <script>
+    // Carga la librería de Google Charts
+    google.charts.load('current', {'packages':['corechart']});
+
+
+    // Carga la librería de Google Charts
+google.charts.load('current', {'packages':['corechart']});
+
+
+// Carga la librería de Google Charts
+google.charts.load('current', {'packages':['corechart']});
+
+
+function procesar() {
+    let a = parseFloat(document.getElementById('a').value);
+    let b = parseFloat(document.getElementById('b').value);
+    let c = parseFloat(document.getElementById('c').value);
+    let d = parseFloat(document.getElementById('d').value);
+    let e = parseFloat(document.getElementById('e').value) || 1;
+    let xmin = parseFloat(document.getElementById('xmin').value);
+    let xmax = parseFloat(document.getElementById('xmax').value);
+
+
+    if ([a, b, c, d, xmin, xmax].some(isNaN)) {
+        alert("Por favor, ingrese todos los valores numéricos correctamente.");
+        return;
+    }
+
+
+    if (xmin > xmax) {
+        alert("El valor mínimo de X debe ser menor o igual al máximo.");
+        return;
+    }
+
+
+    let ymin = Infinity;
+    let ymax = -Infinity;
+    let cortes = 0;
+    let dataArray = [["X", "Y"]];
+    let step = 0.5;
+
+
+    for (let x = xmin; x <= xmax; x += step) {
+        if (x + 2 === 0 || x + e === 0) continue; // Evita divisiones por cero
+
+
+        let denom1 = Math.sqrt(Math.abs(x + 2)) + Math.sqrt(Math.abs(x + 3));
+        let denom2 = x + e;
+        let denom3 = x + 2;
+
+
+        if (denom1 === 0 || denom2 === 0 || denom3 === 0) continue; // Evita divisiones por cero
+
+
+        let parte1 = (Math.sin(a * x) + Math.cos(b * x)) / denom1;
+        let parte2 = (Math.sin(c * x) + Math.cos(d * x)) / denom2;
+        let parte3 = Math.sqrt(Math.abs(x + 1)) / denom3; // Usa valor absoluto para evitar errores con sqrt()
+
+
+        let y = parte1 + parte2 - parte3;
+
+
+        if (y < ymin) ymin = y;
+        if (y > ymax) ymax = y;
+
+
+        if (Math.abs(y) < 0.1) cortes++;
+
+
+        dataArray.push([x, y]);
+    }
+
+
+    document.getElementById('ymin').value = ymin !== Infinity ? ymin.toFixed(6) : "No hay valores";
+    document.getElementById('ymax').value = ymax !== -Infinity ? ymax.toFixed(6) : "No hay valores";
+    document.getElementById('cortes').value = cortes;
+
+
+    generarTabla(dataArray);
+    google.charts.setOnLoadCallback(() => dibujarGrafico(dataArray));
+}
+
+
+function generarTabla(data) {
+    let tablaDiv = document.getElementById('tablaValores');
+    if (data.length <= 1) {
+        tablaDiv.innerHTML = "<p>No se generaron valores válidos en este rango.</p>";
+        return;
+    }
+    let html = "<table border='1'><tr><th>X</th><th>Y</th></tr>";
+    data.slice(1).forEach(([xVal, yVal]) => {
+        if (!isNaN(yVal)) {
+            html += `<tr><td>${xVal}</td><td>${yVal.toFixed(6)}</td></tr>`;
+        }
+    });
+    html += "</table>";
+    tablaDiv.innerHTML = html;
+}
+
+
+function dibujarGrafico(dataArray) {
+    if (dataArray.length <= 1) {
+        document.getElementById('chart_div').innerHTML = "<p>No hay datos para graficar.</p>";
+        return;
+    }
+    let dataTable = google.visualization.arrayToDataTable(dataArray);
+    let options = {
+        title: 'Gráfico de la función',
+        hAxis: { title: 'X' },
+        vAxis: { title: 'Y' },
+        legend: 'none',
+        curveType: 'function'
+    };
+    let chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+    chart.draw(dataTable, options);
+}
+
+
+  </script>
+</body>
+</html>
